@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background"></div>
+    <div class="overlay">
+        <div class="login-container">
+            <h2 class="login-title">Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Enter your email</label>
+                    <input type="email" class="form-control" id="loginEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Enter your password</label>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mt-4">Log In</button>
+            </form>
+            <p class="register-link mt-3" style="color: white;">Don't have an account? <a href="signup.html">Register</a></p>
+            <p id="error-message" style="color: red; display: none;">Wrong email or password</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            
+            const enteredEmail = document.getElementById('loginEmail').value;
+            const enteredPassword = document.getElementById('loginPassword').value;
+
+            
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+
+            
+            if (storedUser && storedUser.email === enteredEmail && storedUser.password === enteredPassword) {
+               
+                window.location.href = 'student_manage.html';
+            } else {
+               
+                document.getElementById('error-message').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

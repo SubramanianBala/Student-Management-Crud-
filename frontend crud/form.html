@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background"></div>
+    <div class="overlay">
+        <div class="registration-container">
+            <h2 class="registration-title"><b>Student Details</b></h2>
+            <form id="registrationForm">
+               
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="firstName">First Name</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="Enter first name" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" placeholder="Enter last name" required>
+                    </div>
+                </div>
+
+                
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="age">Age</label>
+                        <input type="number" class="form-control" id="age" placeholder="Enter age" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" class="form-control" id="dob" required>
+                    </div>
+                </div>
+
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone" placeholder="Enter phone number" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter email" required>
+                </div>
+
+               
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea class="form-control" id="address" placeholder="Enter address" rows="3" required></textarea>
+                </div>
+
+                
+                <div class="form-group">
+                    <label for="course">Course</label>
+                    <input type="text" class="form-control" id="course" placeholder="Enter course name" required>
+                </div>
+
+               
+                <button type="submit" class="btn btn-primary btn-block mt-4">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const studentIndex = urlParams.get('index');
+
+        if (studentIndex !== null) {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const student = students[studentIndex];
+
+            document.getElementById('firstName').value = student.firstName;
+            document.getElementById('lastName').value = student.lastName;
+            document.getElementById('age').value = student.age;
+            document.getElementById('dob').value = student.dob;
+            document.getElementById('phone').value = student.phone;
+            document.getElementById('email').value = student.email;
+            document.getElementById('address').value = student.address;
+            document.getElementById('course').value = student.course;
+
+           
+            document.querySelector('.registration-title').textContent = 'Edit Student Details';
+            document.querySelector('button').textContent = 'Update Student';
+        }
+
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+           
+            const student = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                age: document.getElementById('age').value,
+                dob: document.getElementById('dob').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                address: document.getElementById('address').value,
+                course: document.getElementById('course').value
+            };
+
+          
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+
+           
+            if (studentIndex !== null) {
+                students[studentIndex] = student; 
+            } else {
+                students.push(student);
+            }
+
+           
+            localStorage.setItem('students', JSON.stringify(students));
+
+           
+            window.location.href = 'student_manage.html';
+        });
+    </script>
+</body>
+</html>

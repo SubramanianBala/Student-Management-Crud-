@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Students</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: url('bng.jpg') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+            margin: 0;
+        }
+
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); 
+            z-index: -1; 
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.8); 
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .navbar button {
+            color: white;
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            margin-left: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .navbar button:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            margin-top: 80px;
+            color: white;
+        }
+
+        h2 {
+            color: white;
+        }
+
+        table {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+   
+    <div class="navbar">
+        <button onclick="window.location.href='home.html'">Logout</button>
+        <button onclick="window.location.href='form.html'">Add Student</button>
+    </div>
+
+   
+    <div class="container">
+        <h2 class="text-center mb-4">Manage Students</h2>
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Date of Birth</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="studentTable">
+                
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        
+        const students = JSON.parse(localStorage.getItem('students')) || [];
+
+       
+        function displayStudents() {
+            const tableBody = document.getElementById('studentTable');
+            tableBody.innerHTML = ''; 
+
+            students.forEach((student, index) => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>${student.firstName}</td>
+                    <td>${student.lastName}</td>
+                    <td>${student.age}</td>
+                    <td>${student.dob}</td>
+                    <td>${student.phone}</td>
+                    <td>${student.email}</td>
+                    <td>${student.address}</td>
+                    <td>${student.course}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick="updateStudent(${index})">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteStudent(${index})">
+                            <i class="fa fa-trash-alt"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+       
+        function deleteStudent(index) {
+            students.splice(index, 1); 
+            localStorage.setItem('students', JSON.stringify(students)); 
+            displayStudents();
+        }
+
+       
+        function updateStudent(index) {
+        const student = students[index];
+        const url = `form.html?index=${index}&firstName=${encodeURIComponent(student.firstName)}&lastName=${encodeURIComponent(student.lastName)}&age=${encodeURIComponent(student.age)}&dob=${encodeURIComponent(student.dob)}&phone=${encodeURIComponent(student.phone)}&email=${encodeURIComponent(student.email)}&address=${encodeURIComponent(student.address)}&course=${encodeURIComponent(student.course)}`;
+        window.location.href = url;
+    }
+
+
+       
+        displayStudents();
+    </script>
+</body>
+</html>
